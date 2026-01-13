@@ -260,7 +260,7 @@ export default function LogPage() {
                 height: 10,
                 borderRadius: 999,
                 width: `${(groupPct * 100).toFixed(1)}%`,
-                background: "#111",
+                background: "var(--muted)",
               }}
             />
           </div>
