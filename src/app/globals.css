@@ -1,47 +1,40 @@
 @import "tailwindcss";
 
+/* One set of theme variables for the whole app */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #ffffff;
+  --text: #0a0a0a;
+  --muted: #52525b;   /* zinc-600 */
+  --card: #ffffff;
+  --card2: #f4f4f5;   /* zinc-100 */
+  --border: #e4e4e7;  /* zinc-200 */
+  --danger: #dc2626;  /* red-600 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #09090b;     /* zinc-950 */
+    --text: #fafafa;   /* zinc-50 */
+    --muted: #a1a1aa;  /* zinc-400 */
+    --card: #18181b;   /* zinc-900 */
+    --card2: #27272a;  /* zinc-800 */
+    --border: #3f3f46; /* zinc-700 */
+    --danger: #f87171; /* red-400 */
   }
 }
 
+/* Helps iOS/Android render inputs/buttons correctly in dark mode */
+html {
+  color-scheme: light dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg);
+  color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
 }
-/* Make the app readable in iOS/Android dark mode */
-html {
-  color-scheme: light dark; /* lets form controls use correct theme */
-}
 
-body {
-  background: #ffffff;
-  color: #0a0a0a;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #09090b; /* zinc-950-ish */
-    color: #fafafa;      /* zinc-50-ish */
-  }
-
-  /* Optional: improve default link contrast */
-  a {
-    color: #e5e7eb;
-  }
+/* Optional: link contrast */
+a {
+  color: inherit;
 }
