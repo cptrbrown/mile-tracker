@@ -24,3 +24,24 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* Make the app readable in iOS/Android dark mode */
+html {
+  color-scheme: light dark; /* lets form controls use correct theme */
+}
+
+body {
+  background: #ffffff;
+  color: #0a0a0a;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #09090b; /* zinc-950-ish */
+    color: #fafafa;      /* zinc-50-ish */
+  }
+
+  /* Optional: improve default link contrast */
+  a {
+    color: #e5e7eb;
+  }
+}
