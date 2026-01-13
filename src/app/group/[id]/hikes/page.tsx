@@ -97,10 +97,7 @@ export default function GroupHikesPage() {
     if (!loading && !session) router.replace("/login");
   }, [loading, session, router]);
 
-  const canShow = useMemo(
-    () => !loading && !!session && !!groupId,
-    [loading, session, groupId]
-  );
+  const canShow = useMemo(() => !loading && !!session && !!groupId, [loading, session, groupId]);
 
   const loadEvents = async () => {
     if (!groupId) return;
@@ -198,10 +195,7 @@ export default function GroupHikesPage() {
 
     const { error } = await supabase
       .from("group_event_rsvps")
-      .upsert(
-        { event_id: eventId, user_id: session.user.id, status },
-        { onConflict: "event_id,user_id" }
-      );
+      .upsert({ event_id: eventId, user_id: session.user.id, status }, { onConflict: "event_id,user_id" });
 
     setBusy(false);
 
@@ -297,7 +291,27 @@ export default function GroupHikesPage() {
     await loadEvents();
   };
 
-  if (!canShow) return <main className="px-4 py-6">Loading…</main>;
+  const buttonSecondary =
+    "rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50 " +
+    "dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800";
+
+  const inputBase =
+    "rounded-xl border border-zinc-200 bg-white px-3 py-2 text-base text-zinc-900 outline-none " +
+    "focus:ring-2 focus:ring-black/10 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:ring-white/10";
+
+  const card =
+    "rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900";
+
+  const rsvpBtn = (active: boolean) =>
+    [
+      "rounded-xl border px-3 py-2 text-sm font-medium",
+      active
+        ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+        : "border-zinc-200 bg-white text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-800",
+      busy ? "opacity-70" : "",
+    ].join(" ");
+
+  if (!canShow) return <main className="px-4 py-6 text-zinc-900 dark:text-zinc-100">Loading…</main>;
 
   // Group by day
   const grouped = events.reduce<Record<string, EventRow[]>>((acc, ev) => {
@@ -308,92 +322,72 @@ export default function GroupHikesPage() {
 
   const dayKeys = Object.keys(grouped);
 
-  const rsvpBtn = (active: boolean) =>
-    [
-      "rounded-xl border px-3 py-2 text-sm font-medium",
-      active ? "border-black bg-black text-white" : "border-zinc-200 bg-white hover:bg-zinc-50",
-    ].join(" ");
-
   return (
-    <main className="mx-auto max-w-3xl px-4 py-6">
+    <main className="mx-auto max-w-3xl px-4 py-6 text-zinc-900 dark:text-zinc-100">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold">Hikes</h1>
-          <p className="mt-1 text-sm text-zinc-600">Schedule hikes for the group and RSVP.</p>
+          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">
+            Schedule hikes for the group and RSVP.
+          </p>
         </div>
 
-        <button
-          onClick={() => router.push(`/group/${groupId}`)}
-          className="rounded-xl border border-zinc-200 px-3 py-2 text-sm font-medium hover:bg-zinc-50"
-        >
+        <button onClick={() => router.push(`/group/${groupId}`)} className={buttonSecondary}>
           Back
         </button>
       </div>
 
-      <GroupTabs groupId={groupId!} />
+      <div className="mt-3">
+        <GroupTabs groupId={groupId!} />
+      </div>
 
       {error ? (
-        <p className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        <p className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-900/40 dark:bg-red-950/40 dark:text-red-200">
           {error}
         </p>
       ) : null}
 
       {/* Create hike */}
-      <section className="mt-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <section className={`mt-4 ${card}`}>
         <h2 className="text-lg font-semibold">Schedule a hike</h2>
 
         <form onSubmit={createEvent} className="mt-4 grid gap-3">
           <label className="grid gap-1">
-            <span className="text-sm text-zinc-600">Title</span>
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">Title</span>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., Bear Mountain loop"
-              className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
+              className={inputBase}
               required
             />
           </label>
 
           <label className="grid gap-1">
-            <span className="text-sm text-zinc-600">Date & time</span>
-            <input
-              type="datetime-local"
-              value={startAt}
-              onChange={(e) => setStartAt(e.target.value)}
-              className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
-              required
-            />
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">Date & time</span>
+            <input type="datetime-local" value={startAt} onChange={(e) => setStartAt(e.target.value)} className={inputBase} required />
           </label>
 
           <label className="grid gap-1">
-            <span className="text-sm text-zinc-600">Location / meetup spot</span>
-            <input
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              placeholder="Optional"
-              className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
-            />
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">Location / meetup spot</span>
+            <input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Optional" className={inputBase} />
           </label>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <label className="grid gap-1">
-              <span className="text-sm text-zinc-600">Distance (miles)</span>
+              <span className="text-sm text-zinc-600 dark:text-zinc-300">Distance (miles)</span>
               <input
                 value={distance}
                 onChange={(e) => setDistance(e.target.value)}
                 inputMode="decimal"
                 placeholder="Optional"
-                className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
+                className={inputBase}
               />
             </label>
 
             <label className="grid gap-1">
-              <span className="text-sm text-zinc-600">Difficulty</span>
-              <select
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value as Difficulty)}
-                className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
-              >
+              <span className="text-sm text-zinc-600 dark:text-zinc-300">Difficulty</span>
+              <select value={difficulty} onChange={(e) => setDifficulty(e.target.value as Difficulty)} className={inputBase}>
                 <option value="easy">Easy</option>
                 <option value="moderate">Moderate</option>
                 <option value="moderate_plus">Moderate +</option>
@@ -404,19 +398,19 @@ export default function GroupHikesPage() {
           </div>
 
           <label className="grid gap-1">
-            <span className="text-sm text-zinc-600">Notes</span>
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">Notes</span>
             <input
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Optional details (trailhead, gear, etc.)"
-              className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
+              className={inputBase}
             />
           </label>
 
           <button
             type="submit"
             disabled={busy}
-            className="rounded-xl bg-black px-4 py-2 text-base font-medium text-white disabled:opacity-60"
+            className="rounded-xl bg-black px-4 py-2 text-base font-medium text-white disabled:opacity-60 dark:bg-white dark:text-black"
           >
             {busy ? "Saving…" : "Add hike"}
           </button>
@@ -424,25 +418,21 @@ export default function GroupHikesPage() {
       </section>
 
       {/* Upcoming list */}
-      <section className="mt-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+      <section className={`mt-4 ${card}`}>
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-lg font-semibold">Upcoming</h2>
-          <button
-            onClick={loadEvents}
-            disabled={busy}
-            className="rounded-xl border border-zinc-200 px-3 py-2 text-sm font-medium hover:bg-zinc-50 disabled:opacity-60"
-          >
+          <button onClick={loadEvents} disabled={busy} className={buttonSecondary}>
             Refresh
           </button>
         </div>
 
         {events.length === 0 ? (
-          <p className="mt-3 text-sm text-zinc-600">No hikes scheduled yet.</p>
+          <p className="mt-3 text-sm text-zinc-600 dark:text-zinc-300">No hikes scheduled yet.</p>
         ) : (
           <div className="mt-4 grid gap-5">
             {dayKeys.map((day) => (
               <div key={day}>
-                <div className="text-sm font-semibold text-zinc-700">{day}</div>
+                <div className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">{day}</div>
 
                 <div className="mt-2 grid gap-3">
                   {grouped[day].map((ev) => {
@@ -451,20 +441,20 @@ export default function GroupHikesPage() {
                     const difficultyLabel = DIFFICULTY_LABELS[ev.difficulty];
 
                     return (
-                      <div key={ev.event_id} className="rounded-2xl border border-zinc-200 p-4">
+                      <div key={ev.event_id} className="rounded-2xl border border-zinc-200 p-4 dark:border-zinc-800 dark:bg-zinc-950/20">
                         {!isEditing ? (
                           <>
                             <div className="flex items-start justify-between gap-3">
                               <div>
                                 <div className="text-base font-semibold">{ev.title}</div>
-                                <div className="mt-1 text-sm text-zinc-600">
+                                <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">
                                   {formatDateTime(ev.start_at)} • {difficultyLabel}
                                   {ev.distance_miles !== null ? ` • ${ev.distance_miles.toFixed(2)} mi` : ""}
                                 </div>
                                 {ev.location ? (
-                                  <div className="mt-1 text-sm text-zinc-600">{ev.location}</div>
+                                  <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">{ev.location}</div>
                                 ) : null}
-                                <div className="mt-1 text-xs text-zinc-500">
+                                <div className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
                                   Added by {ev.created_by_name}
                                   {isMe ? " (you)" : ""}
                                 </div>
@@ -472,52 +462,32 @@ export default function GroupHikesPage() {
 
                               {isMe ? (
                                 <div className="flex gap-2">
-                                  <button
-                                    onClick={() => startEdit(ev)}
-                                    className="rounded-xl border border-zinc-200 px-3 py-2 text-sm font-medium hover:bg-zinc-50"
-                                  >
+                                  <button onClick={() => startEdit(ev)} className={buttonSecondary}>
                                     Edit
                                   </button>
-                                  <button
-                                    onClick={() => deleteEvent(ev.event_id)}
-                                    className="rounded-xl border border-zinc-200 px-3 py-2 text-sm font-medium hover:bg-zinc-50"
-                                  >
+                                  <button onClick={() => deleteEvent(ev.event_id)} className={buttonSecondary}>
                                     Delete
                                   </button>
                                 </div>
                               ) : null}
                             </div>
 
-                            {ev.notes ? (
-                              <div className="mt-3 text-sm text-zinc-700">{ev.notes}</div>
-                            ) : null}
+                            {ev.notes ? <div className="mt-3 text-sm text-zinc-700 dark:text-zinc-200">{ev.notes}</div> : null}
 
                             {/* RSVP */}
                             <div className="mt-4">
-                              <div className="text-xs text-zinc-500">
+                              <div className="text-xs text-zinc-500 dark:text-zinc-400">
                                 Going: {ev.going_count} • Maybe: {ev.maybe_count} • No: {ev.no_count}
                               </div>
 
                               <div className="mt-2 flex flex-wrap gap-2">
-                                <button
-                                  onClick={() => setMyRsvp(ev.event_id, "going")}
-                                  disabled={busy}
-                                  className={rsvpBtn(ev.my_status === "going")}
-                                >
+                                <button onClick={() => setMyRsvp(ev.event_id, "going")} disabled={busy} className={rsvpBtn(ev.my_status === "going")}>
                                   Going
                                 </button>
-                                <button
-                                  onClick={() => setMyRsvp(ev.event_id, "maybe")}
-                                  disabled={busy}
-                                  className={rsvpBtn(ev.my_status === "maybe")}
-                                >
+                                <button onClick={() => setMyRsvp(ev.event_id, "maybe")} disabled={busy} className={rsvpBtn(ev.my_status === "maybe")}>
                                   Maybe
                                 </button>
-                                <button
-                                  onClick={() => setMyRsvp(ev.event_id, "no")}
-                                  disabled={busy}
-                                  className={rsvpBtn(ev.my_status === "no")}
-                                >
+                                <button onClick={() => setMyRsvp(ev.event_id, "no")} disabled={busy} className={rsvpBtn(ev.my_status === "no")}>
                                   No
                                 </button>
                               </div>
@@ -529,50 +499,42 @@ export default function GroupHikesPage() {
 
                             <div className="mt-3 grid gap-3">
                               <label className="grid gap-1">
-                                <span className="text-sm text-zinc-600">Title</span>
-                                <input
-                                  value={editTitle}
-                                  onChange={(e) => setEditTitle(e.target.value)}
-                                  className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
-                                />
+                                <span className="text-sm text-zinc-600 dark:text-zinc-300">Title</span>
+                                <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className={inputBase} />
                               </label>
 
                               <label className="grid gap-1">
-                                <span className="text-sm text-zinc-600">Date & time</span>
+                                <span className="text-sm text-zinc-600 dark:text-zinc-300">Date & time</span>
                                 <input
                                   type="datetime-local"
                                   value={editStartAt}
                                   onChange={(e) => setEditStartAt(e.target.value)}
-                                  className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
+                                  className={inputBase}
                                 />
                               </label>
 
                               <label className="grid gap-1">
-                                <span className="text-sm text-zinc-600">Location</span>
-                                <input
-                                  value={editLocation}
-                                  onChange={(e) => setEditLocation(e.target.value)}
-                                  className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
-                                />
+                                <span className="text-sm text-zinc-600 dark:text-zinc-300">Location</span>
+                                <input value={editLocation} onChange={(e) => setEditLocation(e.target.value)} className={inputBase} />
                               </label>
 
                               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <label className="grid gap-1">
-                                  <span className="text-sm text-zinc-600">Distance (miles)</span>
+                                  <span className="text-sm text-zinc-600 dark:text-zinc-300">Distance (miles)</span>
                                   <input
                                     value={editDistance}
                                     onChange={(e) => setEditDistance(e.target.value)}
                                     inputMode="decimal"
-                                    className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
+                                    className={inputBase}
                                   />
                                 </label>
 
                                 <label className="grid gap-1">
-                                  <span className="text-sm text-zinc-600">Difficulty</span>
+                                  <span className="text-sm text-zinc-600 dark:text-zinc-300">Difficulty</span>
                                   <select
                                     value={editDifficulty}
                                     onChange={(e) => setEditDifficulty(e.target.value as Difficulty)}
-                                    className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
+                                    className={inputBase}
                                   >
                                     <option value="easy">Easy</option>
                                     <option value="moderate">Moderate</option>
@@ -584,12 +546,8 @@ export default function GroupHikesPage() {
                               </div>
 
                               <label className="grid gap-1">
-                                <span className="text-sm text-zinc-600">Notes</span>
-                                <input
-                                  value={editNotes}
-                                  onChange={(e) => setEditNotes(e.target.value)}
-                                  className="rounded-xl border border-zinc-200 px-3 py-2 text-base outline-none focus:ring-2 focus:ring-black/10"
-                                />
+                                <span className="text-sm text-zinc-600 dark:text-zinc-300">Notes</span>
+                                <input value={editNotes} onChange={(e) => setEditNotes(e.target.value)} className={inputBase} />
                               </label>
                             </div>
 
@@ -597,14 +555,11 @@ export default function GroupHikesPage() {
                               <button
                                 onClick={saveEdit}
                                 disabled={busy}
-                                className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60"
+                                className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60 dark:bg-white dark:text-black"
                               >
                                 {busy ? "Saving…" : "Save"}
                               </button>
-                              <button
-                                onClick={cancelEdit}
-                                className="rounded-xl border border-zinc-200 px-4 py-2 text-sm font-medium hover:bg-zinc-50"
-                              >
+                              <button onClick={cancelEdit} className={buttonSecondary}>
                                 Cancel
                               </button>
                             </div>
