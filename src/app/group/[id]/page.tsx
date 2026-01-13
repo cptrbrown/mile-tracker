@@ -215,66 +215,6 @@ export default function GroupOverviewPage() {
         </div>
       </section>
 
-      {/* Goals card */}
-      <section className="mt-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm
-                          dark:border-zinc-800 dark:bg-zinc-900">
-        <h2 className="text-lg font-semibold">Goals</h2>
-
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          {/* Group goal */}
-          <div className="rounded-2xl border border-zinc-200 p-3 dark:border-zinc-800">
-            <div className="text-sm font-semibold">Group goal (miles)</div>
-            <div className="mt-2 flex gap-2">
-              <input
-                value={groupGoalEdit}
-                onChange={(e) => setGroupGoalEdit(e.target.value)}
-                inputMode="decimal"
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-base text-zinc-900 outline-none
-                           focus:ring-2 focus:ring-black/10
-                           dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:ring-white/10"
-              />
-              <button
-                onClick={saveGroupGoal}
-                disabled={busy}
-                className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60
-                           dark:bg-white dark:text-black"
-              >
-                Save
-              </button>
-            </div>
-            <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-              Updates the group’s target (used for group badges/milestones).
-            </p>
-          </div>
-
-          {/* My goal */}
-          <div className="rounded-2xl border border-zinc-200 p-3 dark:border-zinc-800">
-            <div className="text-sm font-semibold">My goal (miles)</div>
-            <div className="mt-2 flex gap-2">
-              <input
-                value={myGoalEdit}
-                onChange={(e) => setMyGoalEdit(e.target.value)}
-                inputMode="decimal"
-                className="w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-base text-zinc-900 outline-none
-                           focus:ring-2 focus:ring-black/10
-                           dark:border-zinc-700 dark:bg-zinc-950 dark:text-zinc-100 dark:focus:ring-white/10"
-              />
-              <button
-                onClick={saveMyGoal}
-                disabled={busy}
-                className="rounded-xl bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-60
-                           dark:bg-white dark:text-black"
-              >
-                Save
-              </button>
-            </div>
-            <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-              Sets your personal target (used for your milestones).
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Quick links card */}
       <section className="mt-4 rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm
                           dark:border-zinc-800 dark:bg-zinc-900">
