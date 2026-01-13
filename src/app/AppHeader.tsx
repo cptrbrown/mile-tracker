@@ -23,7 +23,7 @@ export default function AppHeader() {
     [
       "rounded-xl border px-3 py-2 text-sm font-medium",
       "transition",
-      active ? "bg-black text-var(--card) border-black" : "bg-var(--card) text-black border-zinc-200",
+      active ? "bg-var(--card) text-var(--card) border-black" : "bg-var(--card) text-var(--card) border-zinc-200",
     ].join(" ");
 
   return (
