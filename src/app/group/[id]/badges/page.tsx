@@ -97,11 +97,11 @@ export default function BadgesPage() {
   return (
     <main style={{ padding: 24, maxWidth: 720 }}>
       <h1 style={{ marginTop: 16, fontSize: 24, fontWeight: 600 }}>{stats.group_name}</h1>
-      {error ? <p style={{ marginTop: 12, color: "crimson" }}>{error}</p> : null}
+      {error ? <p style={{ marginTop: 12, color: "var(--danger)" }}>{error}</p> : null}
 
       <GroupTabs groupId={groupId!} />
 
-      <section style={{ marginTop: 16, padding: 16, border: "1px solid #eee", borderRadius: 12 }}>
+      <section style={{ marginTop: 16, padding: 16, border: "1px solid var(--border)", borderRadius: 12 }}>
         <h2 style={{ fontSize: 18, fontWeight: 600 }}>Badges</h2>
 
         <div style={{ marginTop: 12, display: "grid", gap: 16 }}>
@@ -123,9 +123,9 @@ export default function BadgesPage() {
                       display: "flex",
                       justifyContent: "space-between",
                       padding: 10,
-                      border: "1px solid #eee",
+                      border: "1px solid var(--border)",
                       borderRadius: 10,
-                      background: earned ? "#f7f7f7" : "transparent",
+                      background: earned ? "var(--card2)" : "transparent",
                     }}
                   >
                     <span style={{ fontWeight: earned ? 700 : 500 }}>
@@ -159,9 +159,9 @@ export default function BadgesPage() {
                       display: "flex",
                       justifyContent: "space-between",
                       padding: 10,
-                      border: "1px solid #eee",
+                      border: "1px solid var(--border)",
                       borderRadius: 10,
-                      background: earned ? "#f7f7f7" : "transparent",
+                      background: earned ? "var(--card2)" : "transparent",
                     }}
                   >
                     <span style={{ fontWeight: earned ? 700 : 500 }}>
@@ -183,7 +183,7 @@ export default function BadgesPage() {
           style={{
             marginTop: 14,
             padding: 10,
-            border: "1px solid #ccc",
+            border: "1px solid var(--border)",
             borderRadius: 10,
             cursor: "pointer",
             background: "transparent",

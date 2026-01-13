@@ -23,11 +23,11 @@ export default function AppHeader() {
     [
       "rounded-xl border px-3 py-2 text-sm font-medium",
       "transition",
-      active ? "bg-black text-white border-black" : "bg-white text-black border-zinc-200",
+      active ? "bg-black text-var(--card) border-black" : "bg-var(--card) text-black border-zinc-200",
     ].join(" ");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-zinc-100 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-zinc-100 bg-var(--card)e/90 backdrop-blur">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
         <div className="flex items-center gap-2">
           <button className={linkClass(!!isGroups)} onClick={() => router.push("/groups")}>
@@ -40,7 +40,8 @@ export default function AppHeader() {
 
         <button
           onClick={signOut}
-          className="rounded-xl border border-zinc-200 px-3 py-2 text-sm font-medium transition hover:bg-zinc-50"
+          className="rounded-xl border border-zinc-200 bg-var(--card) px-3 py-2 text-sm font-medium text-zinc-900 hover:bg-zinc-50
+           dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800"
         >
           Sign out
         </button>

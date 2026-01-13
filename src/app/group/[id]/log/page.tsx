@@ -212,9 +212,9 @@ export default function LogPage() {
             key={t.id}
             style={{
               padding: 12,
-              border: "1px solid #eee",
+              border: "1px solid var(--border)",
               borderRadius: 12,
-              background: "white",
+              background: "var(--card)",
               boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
             }}
           >
@@ -224,7 +224,7 @@ export default function LogPage() {
                 onClick={() => dismissToast(t.id)}
                 aria-label="Dismiss"
                 style={{
-                  border: "1px solid #ddd",
+                  border: "1px solid var(--border)",
                   borderRadius: 8,
                   padding: "2px 8px",
                   cursor: "pointer",
@@ -239,12 +239,12 @@ export default function LogPage() {
       </div>
 
       <h1 style={{ marginTop: 16, fontSize: 24, fontWeight: 600 }}>{stats.group_name}</h1>
-      {error ? <p style={{ marginTop: 12, color: "crimson" }}>{error}</p> : null}
+      {error ? <p style={{ marginTop: 12, color: "var(--danger)" }}>{error}</p> : null}
 
       <GroupTabs groupId={groupId!} />
 
       {/* Progress snapshot */}
-      <section style={{ marginTop: 16, padding: 16, border: "1px solid #eee", borderRadius: 12 }}>
+      <section style={{ marginTop: 16, padding: 16, border: "1px solid var(--border)", borderRadius: 12 }}>
         <h2 style={{ fontSize: 18, fontWeight: 600 }}>Progress</h2>
 
         <div style={{ marginTop: 12 }}>
@@ -254,7 +254,7 @@ export default function LogPage() {
               {formatMiles(stats.group_total)} / {formatMiles(groupGoal)}
             </span>
           </div>
-          <div style={{ marginTop: 6, height: 10, borderRadius: 999, background: "#eee" }}>
+          <div style={{ marginTop: 6, height: 10, borderRadius: 999, background: "var(--border)" }}>
             <div
               style={{
                 height: 10,
@@ -273,13 +273,13 @@ export default function LogPage() {
               {formatMiles(stats.my_total)} / {formatMiles(myGoal)}
             </span>
           </div>
-          <div style={{ marginTop: 6, height: 10, borderRadius: 999, background: "#eee" }}>
+          <div style={{ marginTop: 6, height: 10, borderRadius: 999, background: "var(--border)" }}>
             <div
               style={{
                 height: 10,
                 borderRadius: 999,
                 width: `${(myPct * 100).toFixed(1)}%`,
-                background: "#555",
+                background: "var(--muted)",
               }}
             />
           </div>
@@ -291,7 +291,7 @@ export default function LogPage() {
           style={{
             marginTop: 14,
             padding: 10,
-            border: "1px solid #ccc",
+            border: "1px solid var(--border)",
             borderRadius: 10,
             cursor: "pointer",
             background: "transparent",
@@ -302,7 +302,7 @@ export default function LogPage() {
       </section>
 
       {/* Log miles */}
-      <section style={{ marginTop: 16, padding: 16, border: "1px solid #eee", borderRadius: 12 }}>
+      <section style={{ marginTop: 16, padding: 16, border: "1px solid var(--border)", borderRadius: 12 }}>
         <h2 style={{ fontSize: 18, fontWeight: 600 }}>Log miles</h2>
 
         <form onSubmit={onLogMiles} style={{ marginTop: 12, display: "grid", gap: 10 }}>
@@ -313,7 +313,7 @@ export default function LogPage() {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              style={{ padding: 10, border: "1px solid #ccc", borderRadius: 8 }}
+              style={{ padding: 10, border: "1px solid var(--border)", borderRadius: 8 }}
             />
           </label>
 
@@ -325,7 +325,7 @@ export default function LogPage() {
               inputMode="decimal"
               placeholder="e.g., 3.25"
               required
-              style={{ padding: 10, border: "1px solid #ccc", borderRadius: 8 }}
+              style={{ padding: 10, border: "1px solid var(--border)", borderRadius: 8 }}
             />
           </label>
 
@@ -335,14 +335,14 @@ export default function LogPage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Trail name, location, etc."
-              style={{ padding: 10, border: "1px solid #ccc", borderRadius: 8 }}
+              style={{ padding: 10, border: "1px solid var(--border)", borderRadius: 8 }}
             />
           </label>
 
           <button
             type="submit"
             disabled={busy}
-            style={{ padding: 10, border: "1px solid #ccc", borderRadius: 8, cursor: "pointer" }}
+            style={{ padding: 10, border: "1px solid var(--border)", borderRadius: 8, cursor: "pointer" }}
           >
             {busy ? "Saving…" : "Add entry"}
           </button>
